@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fronting Practice</title>
+    <style>
+        /* Fondo con colores tipo bandera de EE.UU. o Reino Unido */
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(to right, #00247d, #ffffff, #cf142b);
+            margin: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        /* Contenedor central para centrar contenido */
+        #mainContainer {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 500px;
+        }
+
+        /* Contenedor de palabras */
+        .container {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        /* Estilo de palabras */
+        .word {
+            padding: 8px;
+            background-color: lightblue;
+            border-radius: 4px;
+            cursor: grab;
+            margin: 5px;
+        }
+        .word.dragging {
+            opacity: 0.5;
+        }
+
+        /* Botón de Verificar en verde */
+        #verifyButton {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        /* Botón de Siguiente en naranja */
+        #nextButton {
+            padding: 10px 20px;
+            background-color: #ff8800;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* Estilo del botón al pasar el cursor */
+        #verifyButton:hover {
+            background-color: #218838;
+        }
+        #nextButton:hover {
+            background-color: #e07b00;
+        }
+
+        /* Estilo del texto de progreso */
+        #progress {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        /* Estilo del mensaje de feedback */
+        #feedback {
+            font-size: 18px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Contenedor principal que centra todos los elementos -->
+    <div id="mainContainer">
+        <div class="container" id="wordContainer"></div>
+        <button id="verifyButton" onclick="checkAnswer()">Verificar</button>
+        <button id="nextButton" onclick="nextSentence()" disabled>Siguiente</button>
+        <div id="feedback"></div>
+        <div id="progress"></div>
+    </div>
+
+    <script>
+        const container = document.getElementById('wordContainer');
+        const nextButton = document.getElementById('nextButton');
+        const progressDisplay = document.getElementById("progress");
+
+        const sentences = [
+            ["When", "he", "heard", "the", "fire", "alarm,", "did", "he", "make off", "from", "the", "office?"],
+            ["Only", "after", "finishing", "his", "homework,", "did", "he", "go", "to", "play", "outside."],
+            ["Under", "no", "circumstances", "should", "you", "open", "the", "door", "to", "strangers."],
+            ["Rarely", "have", "I", "seen", "such", "dedication", "in", "a", "student."],
+            ["Not", "only", "did", "she", "finish", "the", "project,", "but", "she", "also", "presented", "it", "perfectly."],
+            ["Barely", "had", "they", "arrived", "when", "the", "rain", "started."],
+            ["Hardly", "had", "we", "sat", "down", "when", "the", "movie", "began."],
+            ["Never", "have", "I", "felt", "so", "inspired", "by", "a", "speech."],
+            ["Scarcely", "had", "he", "left", "the", "building", "when", "the", "alarm", "went", "off."],
+            ["Little", "did", "she", "know", "what", "surprises", "awaited", "her", "that", "day."]
+        ];
+
+        const correctAnswers = [
+            "When he heard the fire alarm, did he make off from the office?",
+            "Only after finishing his homework, did he go to play outside.",
+            "Under no circumstances should you open the door to strangers.",
+            "Rarely have I seen such dedication in a student.",
+            "Not only did she finish the project, but she also presented it perfectly.",
+            "Barely had they arrived when the rain started.",
+            "Hardly had we sat down when the movie began.",
+            "Never have I felt so inspired by a speech.",
+            "Scarcely had he left the building when the alarm went off.",
+            "Little did she know what surprises awaited her that day."
+        ];
+
+        let selectedSentences = [];
+        let currentSentenceIndex = 0;
+        let currentAnswer = "";
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function selectRandomSentences() {
+            const indices = Array.from(Array(sentences.length).keys());
+            shuffleArray(indices);
+            selectedSentences = indices.slice(0, 10).map(i => ({
+                sentence: sentences[i],
+                answer: correctAnswers[i]
+            }));
+        }
+
+        function displaySentence() {
+            const currentSentence = selectedSentences[currentSentenceIndex].sentence;
+            currentAnswer = selectedSentences[currentSentenceIndex].answer;
+
+            shuffleArray(currentSentence);
+            container.innerHTML = "";
+            currentSentence.forEach(word => {
+                const wordDiv = document.createElement("div");
+                wordDiv.textContent = word;
+                wordDiv.className = "word";
+                wordDiv.setAttribute("draggable", "true");
+                wordDiv.addEventListener('dragstart', () => wordDiv.classList.add('dragging'));
+                wordDiv.addEventListener('dragend', () => wordDiv.classList.remove('dragging'));
+                container.appendChild(wordDiv);
+            });
+
+            progressDisplay.textContent = `Oración ${currentSentenceIndex + 1} de 10`;
+            nextButton.disabled = true;
+        }
+
+        container.addEventListener('dragover', e => {
+            e.preventDefault();
+            const draggingWord = document.querySelector('.dragging');
+            const afterElement = getDragAfterElement(container, e.clientX);
+            if (afterElement == null) {
+                container.appendChild(draggingWord);
+            } else {
+                container.insertBefore(draggingWord, afterElement);
+            }
+        });
+
+        function getDragAfterElement(container, x) {
+            const draggableElements = [...container.querySelectorAll('.word:not(.dragging)')];
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = x - box.left - box.width / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        function checkAnswer() {
+            const userAnswer = Array.from(container.children).map(word => word.textContent).join(' ');
+            const feedback = document.getElementById("feedback");
+            if (userAnswer === currentAnswer) {
+                feedback.textContent = "¡Correcto!";
+                feedback.style.color = "green";
+                nextButton.disabled = false;
+            } else {
+                feedback.textContent = "Incorrecto, intenta de nuevo.";
+                feedback.style.color = "red";
+            }
+        }
+
+        function nextSentence() {
+            currentSentenceIndex++;
+            if (currentSentenceIndex < 10) {
+                displaySentence();
+                feedback.textContent = "";
+            } else {
+                feedback.textContent = "¡Has completado las 10 oraciones!";
+                feedback.style.color = "blue";
+                nextButton.disabled = true;
+            }
+        }
+
+        window.onload = () => {
+            selectRandomSentences();
+            displaySentence();
+        };
+    </script>
+</body>
+</html>

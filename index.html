@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instrucciones</title>
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: cursive, sans-serif;
+            background: radial-gradient(ellipse at center,#ff9999 30%,#7ab3e5 70%);
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .bg {
+            animation: slide 3s ease-in-out infinite alternate;
+            background-image: linear-gradient(-60deg, rgb(177, 49, 49) 50%, #09f 50%);
+            bottom: 0;
+            left: -50%;
+            opacity: .5;
+            position: fixed;
+            right: -50%;
+            top: 0;
+            z-index: -1;
+        }
+
+        .bg2 {
+            animation-direction: alternate-reverse;
+            animation-duration: 4s;
+        }
+
+        .bg3 {
+            animation-duration: 5s;
+        }
+
+        .content {
+            background-color: rgba(255, 255, 255, .8);
+            border-radius: .25em;
+            box-shadow: 0 0 .25em rgba(0, 0, 0, .25);
+            box-sizing: border-box;
+            left: 50%;
+            padding: 10vmin;
+            position: fixed;
+            text-align: center;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        h1, h2, h3 {
+            font-family: monospace;
+            color: #000000;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.5;
+            padding: 0 20px;
+        }
+
+        ol {
+            font-size: 18px;
+            text-align: left;
+            display: inline-block;
+            padding-left: 20px;
+            margin-top: 20px;
+        }
+
+        ol li {
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #ff6600;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 20px 10px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ff9933;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 10px;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            border-radius: 10px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        @keyframes slide {
+            0% {
+                transform: translateX(-25%);
+            }
+            100% {
+                transform: translateX(25%);
+            }
+        }
+        header {
+            margin-top: 50px;
+        }
+
+        h1 {
+            color: #040404;
+            font-size: 9.5em;
+            margin-bottom: 50px;
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+        h1 span {
+            display: inline-block;
+            transform-origin: bottom center;
+        }
+
+        h1 span:nth-child(1) { transform: rotate(0deg) translateY(34px) translateX(-22px); }
+        h1 span:nth-child(15) { transform: rotate(28deg) translateY(34px) translateX(-22px); }
+        
+        h2{
+            font-size: 4.5em;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fondo animado -->
+    <div class="bg"></div>
+    <div class="bg bg2"></div>
+    <div class="bg bg3"></div>
+
+   
+        <!-- Botón de Volver a Inicio -->
+        <button onclick="window.location.href='fronting_practice.html'">Practicar</button>
+
+        <h1>
+            <span>F</span>
+            <span>R</span>
+            <span>O</span>
+            <span>N</span>
+            <span>T</span>
+            <span>I</span>
+            <span>N</span>
+            <span>G</span>
+        </h1>
+        <h2>"Practica temas de nivel avanzado en inglés"</h2>
+</body>
+</html>
